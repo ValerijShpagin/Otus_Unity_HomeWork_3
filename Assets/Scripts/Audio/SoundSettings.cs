@@ -31,4 +31,6 @@ public class SoundSettings : MonoBehaviour
     {
         _audioMixer.SetFloat(_groupName, value);
     }
+
+    
 }

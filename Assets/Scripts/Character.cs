@@ -33,7 +33,12 @@ public class Character : MonoBehaviour
     public float runSpeed;
     public float distanceFromEnemy;
     private PlaySound playSound;
-    public string damageSoundName;
+    public string shootSound;
+    public string deathSound;
+    public string playerWin;
+    public string playerLose;
+    public string meleeAtackSound;
+    public string meleeAtackPunchSound;
     
     private Vector3 originalPosition;
     private Quaternion originalRotation;
@@ -80,7 +85,7 @@ public class Character : MonoBehaviour
 
         DamageEffect damageEffect = GetComponent<DamageEffect>();
         if (damageEffect) damageEffect.ShowDamageEffect();
-        if (playSound) playSound.Play(damageSoundName);
+       // if (playSound) playSound.Play(damageSoundName);
 
         health.ApplyDamage(1.0f); // FIXME: захардкожено
         if (health.current <= 0.0f)
@@ -161,6 +166,7 @@ public class Character : MonoBehaviour
             case State.BeginAttack:
                 animator.SetTrigger(MeleeAttack);
                 state = State.Attack;
+                if(playSound) playSound.Play(meleeAtackSound);
                 break;
 
             case State.Attack:
@@ -169,6 +175,7 @@ public class Character : MonoBehaviour
             case State.BeginShoot:
                 animator.SetTrigger(Shoot);
                 state = State.Shoot;
+                if (playSound) playSound.Play(shootSound);
                 break;
 
             case State.Shoot:
@@ -177,6 +184,7 @@ public class Character : MonoBehaviour
             case State.BeginPunch:
                 animator.SetTrigger(Punch);
                 state = State.Punch;
+                if(playSound) playSound.Play(meleeAtackPunchSound);
                 break;
 
             case State.Punch:
@@ -191,6 +199,7 @@ public class Character : MonoBehaviour
             case State.BeginDying:
                 animator.SetTrigger(Death);
                 state = State.Dead;
+                if (playSound) playSound.Play(deathSound);
                 break;
 
             case State.Dead:

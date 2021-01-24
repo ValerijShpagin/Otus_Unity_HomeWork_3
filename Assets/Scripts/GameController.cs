@@ -13,7 +13,9 @@ internal sealed class GameController : MonoBehaviour
     public Character[] enemyCharacter;
     Character currentTarget;
     bool waitingForInput;
-
+    public PlaySound playSound;
+    public Character character;
+    
     Character FirstAliveCharacter(Character[] characters)
     {
         return characters.FirstOrDefault(character => !character.IsDead());
@@ -22,11 +24,13 @@ internal sealed class GameController : MonoBehaviour
     void PlayerWon()
     {
         Debug.Log("Player won.");
+        if (playSound) playSound.Play(character.playerWin);
     }
 
     void PlayerLost()
     {
         Debug.Log("Player lost.");
+        if (playSound) playSound.Play(character.playerLose);
     }
 
     bool CheckEndGame()
@@ -71,6 +75,11 @@ internal sealed class GameController : MonoBehaviour
         while (!CheckEndGame()) {
             foreach (var player in playerCharacter)
             {
+                if (player.IsDead())
+                {
+                    continue;
+                }
+                
                 currentTarget = FirstAliveCharacter(enemyCharacter);
                 if (currentTarget == null)
                     break;
@@ -96,6 +105,11 @@ internal sealed class GameController : MonoBehaviour
 
             foreach (var enemy in enemyCharacter)
             {
+                if(enemy.IsDead())
+                {
+                    continue;
+                }
+                
                 Character target = FirstAliveCharacter(playerCharacter);
                 if (target == null)
                     break;
